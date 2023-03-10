@@ -65,6 +65,7 @@ public class CapacitorUpdaterPlugin
   private Integer appReadyTimeout = 10000;
   private Boolean autoDeleteFailed = true;
   private Boolean autoDeletePrevious = true;
+  private Boolean isEnabled = true;
   private Boolean autoUpdate = false;
   private String updateUrl = "";
   private Version currentVersionNative;
@@ -75,6 +76,18 @@ public class CapacitorUpdaterPlugin
   private Boolean isPreviousMainActivity = true;
 
   private volatile Thread appReadyCheck;
+
+  @PluginMethod
+  public void enable(final PluginCall call) {
+    this.isEnabled = true;
+    call.resolve();
+  }
+
+  @PluginMethod
+  public void disable(final PluginCall call) {
+    this.isEnabled = false;
+    call.resolve();
+  }
 
   @Override
   public void load() {
@@ -143,6 +156,7 @@ public class CapacitorUpdaterPlugin
       "init for device " + this.implementation.deviceID
     );
 
+    this.isEnabled = this.getConfig().getBoolean("enable", true);
     this.autoDeleteFailed =
       this.getConfig().getBoolean("autoDeleteFailed", true);
     this.autoDeletePrevious =
@@ -333,6 +347,10 @@ public class CapacitorUpdaterPlugin
 
   @PluginMethod
   public void download(final PluginCall call) {
+    if (this.isEnabled == false) {
+      call.resolve();
+      return;
+    }
     final String url = call.getString("url");
     final String version = call.getString("version");
     final String sessionKey = call.getString("sessionKey", "");
@@ -1162,6 +1180,10 @@ public class CapacitorUpdaterPlugin
   }
 
   public void appMovedToForeground() {
+    if (this.isEnabled == false) {
+      return;
+    }
+
     this._checkCancelDelay(true);
     if (CapacitorUpdaterPlugin.this._isAutoUpdateEnabled()) {
       this.backgroundDownload();
@@ -1170,6 +1192,10 @@ public class CapacitorUpdaterPlugin
   }
 
   public void appMovedToBackground() {
+    if (this.isEnabled == false) {
+      return;
+    }
+
     Log.i(CapacitorUpdater.TAG, "Checking for pending update");
     try {
       Gson gson = new Gson();

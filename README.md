@@ -160,6 +160,8 @@ Capacitor Updator works by unzipping a compiled app bundle to the native device 
 * [`getDeviceId()`](#getdeviceid)
 * [`getPluginVersion()`](#getpluginversion)
 * [`isAutoUpdateEnabled()`](#isautoupdateenabled)
+* [`enable()`](#enable)
+* [`disable()`](#disable)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
 
@@ -605,6 +607,28 @@ isAutoUpdateEnabled() => Promise<{ enabled: boolean; }>
 Get the state of auto update config. This will return `false` in manual mode.
 
 **Returns:** <code>Promise&lt;{ enabled: boolean; }&gt;</code>
+
+--------------------
+
+
+### enable()
+
+```typescript
+enable() => void
+```
+
+Enables the native Capacitor Updater plugin
+
+--------------------
+
+
+### disable()
+
+```typescript
+disable() => void
+```
+
+Disables the native Capacitor Updater plugin
 
 --------------------
 

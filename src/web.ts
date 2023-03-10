@@ -118,4 +118,12 @@ export class CapacitorUpdaterWeb
     console.warn("Cannot cancelDelay in web");
     return;
   }
+  enable(): void {
+    console.warn("Cannot enable in web");
+    return;
+  }
+  disable(): void {
+    console.warn("Cannot disable in web");
+    return;
+  }
 }
