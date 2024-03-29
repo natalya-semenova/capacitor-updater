@@ -62,6 +62,17 @@ declare module "@capacitor/cli" {
        */
       autoUpdate?: boolean;
 
+
+      /**
+       * Configure whether the plugin should be enabled by default.
+       *
+       * Only available for Android and iOS.
+       *
+       * @default true
+       * @example false
+       */
+      enable?: boolean;
+
       /**
        * Automatically delete previous downloaded bundles when a newer native app bundle is installed to the device.
        *
@@ -411,6 +422,16 @@ export interface CapacitorUpdaterPlugin {
    * @throws {Error}
    */
   isAutoUpdateEnabled(): Promise<AutoUpdateEnabled>;
+
+  /**
+   * Enables the native Capacitor Updater plugin
+   */
+  enable(): void;
+
+  /**
+   * Disables the native Capacitor Updater plugin
+   */
+  disable(): void;
 
   /**
    * Remove all listeners for this plugin.

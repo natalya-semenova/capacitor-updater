@@ -67,6 +67,7 @@ public class CapacitorUpdaterPlugin extends Plugin {
   private Integer periodCheckDelay = 0;
   private Boolean autoDeleteFailed = true;
   private Boolean autoDeletePrevious = true;
+  private Boolean isEnabled = true;
   private Boolean autoUpdate = false;
   private String updateUrl = "";
   private Version currentVersionNative;
@@ -80,6 +81,18 @@ public class CapacitorUpdaterPlugin extends Plugin {
 
   //  private static final CountDownLatch semaphoreReady = new CountDownLatch(1);
   private static final Phaser semaphoreReady = new Phaser(1);
+
+  @PluginMethod
+  public void enable(final PluginCall call) {
+    this.isEnabled = true;
+    call.resolve();
+  }
+
+  @PluginMethod
+  public void disable(final PluginCall call) {
+    this.isEnabled = false;
+    call.resolve();
+  }
 
   public Thread startNewThread(final Runnable function, Number waitTime) {
     Thread bgTask = new Thread(() -> {
@@ -210,6 +223,7 @@ public class CapacitorUpdaterPlugin extends Plugin {
     this.autoDeletePrevious =
       this.getConfig().getBoolean("autoDeletePrevious", true);
     this.updateUrl = this.getConfig().getString("updateUrl", updateUrlDefault);
+    this.isEnabled = this.getConfig().getBoolean("enable", true);
     this.autoUpdate = this.getConfig().getBoolean("autoUpdate", true);
     this.appReadyTimeout = this.getConfig().getInt("appReadyTimeout", 10000);
     this.implementation.timeout =
@@ -575,6 +589,10 @@ public class CapacitorUpdaterPlugin extends Plugin {
 
   @PluginMethod
   public void download(final PluginCall call) {
+    if (this.isEnabled == false) {
+      call.resolve();
+      return;
+    }
     final String url = call.getString("url");
     final String version = call.getString("version");
     final String sessionKey = call.getString("sessionKey", "");
@@ -1438,6 +1456,9 @@ public class CapacitorUpdaterPlugin extends Plugin {
   }
 
   public void appMovedToForeground() {
+    if (this.isEnabled == false) {
+      return;
+    }
     final BundleInfo current =
       CapacitorUpdaterPlugin.this.implementation.getCurrentBundle();
     CapacitorUpdaterPlugin.this.implementation.sendStats(
@@ -1458,6 +1479,9 @@ public class CapacitorUpdaterPlugin extends Plugin {
   }
 
   public void appMovedToBackground() {
+    if (this.isEnabled == false) {
+      return;
+    }
     final BundleInfo current =
       CapacitorUpdaterPlugin.this.implementation.getCurrentBundle();
     CapacitorUpdaterPlugin.this.implementation.sendStats(

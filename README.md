@@ -162,6 +162,7 @@ CapacitorUpdater can be configured with these options:
 | **`autoDeleteFailed`**   | <code>boolean</code> | Configure whether the plugin should use automatically delete failed bundles. Only available for Android and iOS.                                                                                | <code>true</code>                              |         |
 | **`autoDeletePrevious`** | <code>boolean</code> | Configure whether the plugin should use automatically delete previous bundles after a successful update. Only available for Android and iOS.                                                    | <code>true</code>                              |         |
 | **`autoUpdate`**         | <code>boolean</code> | Configure whether the plugin should use Auto Update via an update server. Only available for Android and iOS.                                                                                   | <code>true</code>                              |         |
+| **`enable`**             | <code>boolean</code> | Configure whether the plugin should be enabled by default. Only available for Android and iOS.                                                                                                  | <code>true</code>                              |         |
 | **`resetWhenUpdate`**    | <code>boolean</code> | Automatically delete previous downloaded bundles when a newer native app bundle is installed to the device. Only available for Android and iOS.                                                 | <code>true</code>                              |         |
 | **`updateUrl`**          | <code>string</code>  | Configure the URL / endpoint to which update checks are sent. Only available for Android and iOS.                                                                                               | <code>https://api.capgo.app/auto_update</code> |         |
 | **`statsUrl`**           | <code>string</code>  | Configure the URL / endpoint to which update statistics are sent. Only available for Android and iOS. Set to "" to disable stats reporting.                                                     | <code>https://api.capgo.app/stats</code>       |         |
@@ -190,6 +191,7 @@ In `capacitor.config.json`:
       "autoDeleteFailed": false,
       "autoDeletePrevious": false,
       "autoUpdate": false,
+      "enable": false,
       "resetWhenUpdate": false,
       "updateUrl": https://example.com/api/auto_update,
       "statsUrl": https://example.com/api/stats,
@@ -224,6 +226,7 @@ const config: CapacitorConfig = {
       autoDeleteFailed: false,
       autoDeletePrevious: false,
       autoUpdate: false,
+      enable: false,
       resetWhenUpdate: false,
       updateUrl: https://example.com/api/auto_update,
       statsUrl: https://example.com/api/stats,
@@ -274,6 +277,8 @@ export default config;
 * [`getDeviceId()`](#getdeviceid)
 * [`getPluginVersion()`](#getpluginversion)
 * [`isAutoUpdateEnabled()`](#isautoupdateenabled)
+* [`enable()`](#enable)
+* [`disable()`](#disable)
 * [`removeAllListeners()`](#removealllisteners)
 * [`addListener('download', ...)`](#addlistenerdownload)
 * [`addListener('noNeedUpdate', ...)`](#addlistenernoneedupdate)
@@ -639,6 +644,28 @@ isAutoUpdateEnabled() => Promise<AutoUpdateEnabled>
 Get the state of auto update config.
 
 **Returns:** <code>Promise&lt;<a href="#autoupdateenabled">AutoUpdateEnabled</a>&gt;</code>
+
+--------------------
+
+
+### enable()
+
+```typescript
+enable() => void
+```
+
+Enables the native Capacitor Updater plugin
+
+--------------------
+
+
+### disable()
+
+```typescript
+disable() => void
+```
+
+Disables the native Capacitor Updater plugin
 
 --------------------
 
